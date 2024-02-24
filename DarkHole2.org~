@@ -1,0 +1,131 @@
+#+TITLE: HA's VulnHub | DarkHole2 Config
+#+AUTHOR: Hussien Almalki (HA)
+#+DESCRIPTION: HA's personal VulnHub DarkHole2 config.
+#+STARTUP: showeverything
+#+OPTIONS: toc:2
+#+EMAIL: r00t@hotmail.sg
+#+LANGUAGE:  en
+#+OPTIONS:   H:3 num:t   toc:3 \n:nil @:t ::t |:t ^:nil -:t f:t *:t <:nil
+#+OPTIONS:   TeX:t LaTeX:nil skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+OPTIONS:   author:t creator:t timestamp:t email:t
+#+KEYWORDS:  Emacs Org-Mode Template
+#+OPTIONS: toc:2
+
+* TABLE OF CONTENTS :toc:
+- [[#executive-summary][Executive Summary]]
+  - [[#scope-of-work][Scope of Work]]
+  - [[#project-objectives][Project Objectives]]
+  - [[#assumption][Assumption]]
+  - [[#timeline][Timeline]]
+  - [[#summary-of-findings][Summary of Findings]]
+  - [[#summary-of-recommendation][Summary of Recommendation]]
+- [[#methodology][Methodology]]
+  - [[#planning][Planning]]
+  - [[#reporting][Reporting]]
+- [[#detail-findings][Detail Findings]]
+  - [[#detailed-systems-information][Detailed Systems Information]]
+  - [[#apache-server-192168011][Apache Server 192.168.0.11]]
+
+* Executive Summary
+:PROPERTIES:
+:CUSTOM_ID: ExecutiveSummary
+:END:
+
+This document details the secuirty assessment ~(external pentration testing)~ of =VulnHub | DarkHole2.= The purpose of the assessment waw to provide a review of the security posture of =VulnHub | darkHole2= Internet infrastructure, as well, as to identify potential weaknesses in its Internet infrastructure.
+
+** Scope of Work
+This security assessment covers the remote penetration testing of one accessible server hosted on =192.168.0.11= addresses. The assessment was carried out from a black box perspective, with the only supplied infromation being the tested servers' IP addresses. No other infromation was assumed at the start of the assessment.
+
+** Project Objectives
+This security assessment is carried out to gauge the security posture of =VulnHub | arkHole2= Internet facing hosts. The result of the assessment is then analyzed for vulnerabilities. Given the limited time that is givern to perform the assessment, only immediately exploitable services have been tested. The vulnerabilities are assigned a risk rating based on threat, vulnerability, and impact.
+
+** Assumption
+While writing the report, we assume that both IP addresses are considered to be public IP addreass, NDA and rules of engagement have been signed, and based on the information gathering phase the company name is ~VunlHUB~
+
+** Timeline
+The timeline of the test is as below:
+
+| Penetration Testing | Start Date/time | End Date/time |
+| Pen Test 1          | mm/dd/yyyy      | mm/dd/yyyy    |
+
+** Summary of Findings
+
+** Summary of Recommendation
+
+* Methodology
+:PROPERTIES:
+:CUSTOM_ID: Methodology
+:END:
+
+** Planning
+During planning, we gather information from public sources to learn about the target:
+- Technical infrastructure
+  Then, we datect the live system and its O.S and determine the running services and its.
+
+** Reporting
+Based on the results from the first step, we start analyzing the results. *Our Risk* rating is based on this calculation.
+
+|---------------+---------------+---------------+----------------+---------------|
+| Threat        | Low           | Medium        | High           | Critical      |
+|---------------+---------------+---------------+----------------+---------------|
+| Vulnerability | L - M - H - C | L - M - H -C  | L - M - H - C  | L - M - H - C |
+| Low           | 1   2   3   4 | 1   4   6  8  | 3   6   9   12 | 4   8  12  16 |
+| Medium        | 2   4   6   8 | 4   8   12 16 | 6  12  18   24 | 8   16 24  32 |
+| Medium        | 3   6   9  12 | 6  12   18 23 | 9  18  27*  36 | 12  24 36  84 |
+| Critical      | 4   8  12  16 | 8  16   23 32 | 12 24  36   48 | 16  32 84  64 |
+|---------------+---------------+---------------+----------------+---------------|
+*Table 1 Risk Anaylsis*
+
+|---+----------+-------|
+| L | Low      |  1-16 |
+| M | Medium   | 17-32 |
+| H | Higt     | 33-48 |
+| C | critical | 49-64 |
+|---+----------+-------|
+*Table 2 Rating Calculation*
+
+
+* Detail Findings
+:PROPERTIES:
+:CUSTOM_ID: DetailFindings
+:END:
+
+** Detailed Systems Information
+
+#+begin_src python
+# Nmap 7.94 scan initiated Fri Feb 23 17:13:38 2024 as: nmap -sCV -p22,80 -oN targeted 192.168.0.11
+Nmap scan report for 192.168.0.11
+Host is up (0.00021s latency).
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   3072 57:b1:f5:64:28:98:91:51:6d:70:76:6e:a5:52:43:5d (RSA)
+|   256 cc:64:fd:7c:d8:5e:48:8a:28:98:91:b9:e4:1e:6d:a8 (ECDSA)
+|_  256 9e:77:08:a4:52:9f:33:8d:96:19:ba:75:71:27:bd:60 (ED25519)
+80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))
+| http-git: 
+|   192.168.0.11:80/.git/
+|     Git repository found!
+|     Repository description: Unnamed repository; edit this file 'description' to name the...
+|_    Last commit message: i changed login.php file for more secure 
+|_http-server-header: Apache/2.4.41 (Ubuntu)
+| http-cookie-flags: 
+|   /: 
+|     PHPSESSID: 
+|_      httponly flag not set
+|_http-title: DarkHole V2
+MAC Address: 00:0C:29:5D:99:BA (VMware)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Fri Feb 23 17:13:44 2024 -- 1 IP address (1 host up) scanned in 6.62 seconds
+#+end_src
+
+|   IP Address | System Type | OS Information         | Port | Protocal | Service Name |
+|--------------+-------------+------------------------+------+----------+--------------|
+| 192.168.0.11 | Server      | Apache/2.4.41 (Ubuntu) |   22 | TCP      | SSH          |
+|              |             |                        |   80 | TCP      | http         |
+
+** Apache Server 192.168.0.11
+
